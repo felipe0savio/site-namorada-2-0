@@ -22,7 +22,7 @@
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background: url('rosas.gif') center center / cover no-repeat;
-      opacity: 0.2; /* ajuste a opacidade que preferir */
+      opacity: 0.2;
       pointer-events: none;
       z-index: 0;
     }
@@ -95,7 +95,7 @@
       top: -40px;
       width: 30px;
       height: 30px;
-      background: url('petala.png') no-repeat center/contain; /* imagem local */
+      background: url('petala.png') no-repeat center/contain;
       opacity: 0.9;
       animation-name: cair;
       animation-timing-function: linear;
@@ -115,7 +115,7 @@
       }
     }
     audio {
-      display: none; /* escondendo o player */
+      display: none;
     }
   </style>
 </head>
@@ -133,8 +133,11 @@ Para sempre seu,
 Sávio Felipe
  🌹</p>
 
-  <!-- Contador de tempo de namoro -->
   <div id="contador-namoro"></div>
+
+  <button id="botao-clique" style="margin: 20px auto; padding: 10px 20px; font-size: 1.2em; border-radius: 10px; border: none; background-color: #d6336c; color: white; cursor: pointer;">
+    Clique aqui
+  </button>
 
   <div class="carousel">
     <img src="foto 0.jpg" alt="Foto 0" class="active" />
@@ -202,6 +205,10 @@ Sávio Felipe
     setInterval(atualizarContador, 1000);
     atualizarContador();
 
+    // Botão clique aqui
+    document.getElementById('botao-clique').addEventListener('click', () => {
+      alert('Você clicou no botão! ❤️');
+    });
   </script>
 </body>
 </html>
