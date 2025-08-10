@@ -15,23 +15,20 @@
       position: relative;
       min-height: 100vh;
     }
-
     h1 {
       font-size: 3em;
       margin-bottom: 10px;
       animation: pulse 2s infinite;
     }
-
     #texto {
       font-size: 1.4em;
       margin: 20px auto;
       max-width: 600px;
       line-height: 1.6;
       color: #b42e59;
-      min-height: 180px; /* para evitar "pular" na digitação */
+      min-height: 180px;
       white-space: pre-wrap;
     }
-
     .carousel {
       max-width: 320px;
       margin: 20px auto;
@@ -40,23 +37,18 @@
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
     }
-
     .carousel img {
       width: 100%;
       display: none;
       border-radius: 20px;
     }
-
     .carousel img.active {
       display: block;
     }
-
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
     }
-
-    /* Corações animados */
     .heart {
       position: fixed;
       bottom: 10px;
@@ -68,13 +60,10 @@
       cursor: default;
       z-index: 10;
     }
-
     @keyframes heartBeat {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.3); }
     }
-
-    /* Pétalas caindo */
     .petala {
       position: fixed;
       top: -50px;
@@ -89,7 +78,6 @@
       z-index: 5;
       filter: drop-shadow(0 0 1px #d6336c);
     }
-
     @keyframes cair {
       0% {
         transform: translateY(0) rotate(0deg);
@@ -100,8 +88,6 @@
         opacity: 0;
       }
     }
-
-    /* Player YouTube estilo */
     .youtube-player {
       margin: 20px auto;
       max-width: 320px;
@@ -109,10 +95,22 @@
       border-radius: 12px;
       overflow: hidden;
     }
+    #toggle-sound {
+      margin: 10px auto;
+      display: block;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      background: #d6336c;
+      color: #fff;
+      border: none;
+      max-width: 320px;
+      box-shadow: 0 0 8px rgba(214, 51, 108, 0.8);
+    }
   </style>
 </head>
 <body>
-
   <h1>Para você, minha princesa 💖</h1>
   <p id="texto"></p>
 
@@ -130,12 +128,14 @@
   </div>
 
   <div class="youtube-player">
-    <iframe width="320" height="180" 
-      src="https://youtu.be/51lOFuCR7dE?si=MLlJ5tRkgfWu7g8L" 
-      title="Jorge & Mateus - Quando o Sol Chegar" frameborder="0" 
+    <iframe id="ytplayer" width="320" height="180"
+      src="https://www.youtube.com/embed/ZevlJp_5rls?autoplay=1&loop=1&playlist=ZevlJp_5rls&mute=1"
+      title="Jorge & Mateus - Quando o Sol Chegar" frameborder="0"
       allow="autoplay; encrypted-media" allowfullscreen>
     </iframe>
   </div>
+
+  <button id="toggle-sound">🔈 Ativar Som</button>
 
   <div class="heart">❤️</div>
 
@@ -175,7 +175,40 @@ Sávio Felipe
       images[current].classList.add('active');
     }
     setInterval(showNextImage, 4000);
+
+    // Controle som do YouTube
+    const toggleSoundBtn = document.getElementById('toggle-sound');
+    const ytplayer = document.getElementById('ytplayer');
+
+    let isMuted = true;
+
+    toggleSoundBtn.addEventListener('click', () => {
+      if (isMuted) {
+        ytplayer.src = "https://www.youtube.com/embed/ZevlJp_5rls?autoplay=1&loop=1&playlist=ZevlJp_5rls&mute=0";
+        toggleSoundBtn.textContent = "🔇 Mute";
+        isMuted = false;
+      } else {
+        ytplayer.src = "https://www.youtube.com/embed/ZevlJp_5rls?autoplay=1&loop=1&playlist=ZevlJp_5rls&mute=1";
+        toggleSoundBtn.textContent = "🔈 Ativar Som";
+        isMuted = true;
+      }
+    });
+
+    // Criar pétalas caindo
+    function criarPetala() {
+      const petala = document.createElement('div');
+      petala.classList.add('petala');
+      petala.style.left = Math.random() * window.innerWidth + 'px';
+      petala.style.animationDuration = (5 + Math.random() * 5) + 's';
+      petala.style.opacity = Math.random() * 0.8 + 0.2;
+      document.body.appendChild(petala);
+
+      setTimeout(() => {
+        petala.remove();
+      }, 10000);
+    }
+
+    setInterval(criarPetala, 300);
   </script>
 </body>
 </html>
-
