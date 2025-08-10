@@ -72,7 +72,7 @@
     Te amo demais, minha linda! 🌹
   </p>
 <div class="carousel">
-  <img src="https://felipe0savio.github.io/site-namorada-2-0/" alt="https://felipe0savio.github.io/site-namorada-2-0/" class="active" />
+  <img src="foto1.jpg" alt="Foto 1" />
   <img src="foto2.jpg" alt="Foto 2" />
   <img src="foto3.jpg" alt="Foto 3" />
 </div>
@@ -82,6 +82,7 @@
 
 </body>
 </html>
+
 
 
 
