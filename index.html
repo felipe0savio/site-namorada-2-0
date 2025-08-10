@@ -28,22 +28,28 @@
       color: #b42e59;
     }
 
-    img {
-      max-width: 300px;
+    .carousel {
+      max-width: 320px;
+      margin: 20px auto;
+      position: relative;
       border-radius: 20px;
+      overflow: hidden;
       box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
-      margin-top: 20px;
-      animation: float 4s ease-in-out infinite;
+    }
+
+    .carousel img {
+      width: 100%;
+      display: none;
+      border-radius: 20px;
+    }
+
+    .carousel img.active {
+      display: block;
     }
 
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
     }
 
     /* Corações animados */
@@ -71,24 +77,28 @@
     Obrigado por ser essa luz na minha vida e me fazer sorrir sem motivo.  
     Te amo demais, minha linda! 🌹
   </p>
-<div class="carousel">
-  <img src="foto1.jpg" alt="minha foto" class="active" />
-  <img src="foto2.jpg" alt="Foto 2" />
-  <img src="foto3.jpg" alt="Foto 3" />
-  <img src="foto4.jpg" alt="Foto 4" />
-  <img src="foto5.jpg" alt="Foto 5" />
-</div>
+
+  <div class="carousel">
+    <img src="foto1.jpg" alt="Foto 1" class="active" />
+    <img src="foto2.jpg" alt="Foto 2" />
+    <img src="foto3.jpg" alt="Foto 3" />
+    <img src="foto4.jpg" alt="Foto 4" />
+    <img src="foto5.jpg" alt="Foto 5" />
+  </div>
 
   <div class="heart">❤️</div>
 
+  <script>
+    const images = document.querySelectorAll('.carousel img');
+    let current = 0;
+
+    function showNextImage() {
+      images[current].classList.remove('active');
+      current = (current + 1) % images.length;
+      images[current].classList.add('active');
+    }
+
+    setInterval(showNextImage, 4000); // troca a cada 4 segundos
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
