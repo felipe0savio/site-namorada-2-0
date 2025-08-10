@@ -34,34 +34,22 @@
       position: relative;
       z-index: 1;
     }
-    #texto {
-      font-size: 1.4em;
-      margin: 20px auto;
-      max-width: 600px;
-      line-height: 1.6;
-      color: #b42e59;
-      min-height: 180px;
-      white-space: pre-wrap;
-      position: relative;
-      z-index: 1;
-    }
-    #contador-namoro {
-      font-size: 1.5em;
-      color: #d6336c;
-      margin: 20px auto;
-      max-width: 600px;
-      position: relative;
-      z-index: 1;
-    }
-    .carousel {
+
+    #fotos, #conteudo {
       max-width: 320px;
       margin: 20px auto;
-      position: relative;
       border-radius: 20px;
-      overflow: hidden;
       box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
+      position: relative;
       z-index: 1;
+      display: none; /* escondido inicialmente */
     }
+
+    .carousel {
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
     .carousel img {
       width: 100%;
       display: none;
@@ -70,10 +58,44 @@
     .carousel img.active {
       display: block;
     }
+
+    #texto {
+      font-size: 1.4em;
+      margin: 20px auto;
+      max-width: 600px;
+      line-height: 1.6;
+      color: #b42e59;
+      white-space: pre-wrap;
+    }
+
+    #contador-namoro {
+      font-size: 1.5em;
+      color: #d6336c;
+      margin: 10px auto 30px;
+    }
+
+    button {
+      margin: 30px auto;
+      padding: 12px 25px;
+      font-size: 1.2em;
+      border-radius: 10px;
+      border: none;
+      background-color: #d6336c;
+      color: white;
+      cursor: pointer;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #b42e59;
+    }
+
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
     }
+
     .heart {
       position: fixed;
       bottom: 10px;
@@ -85,10 +107,12 @@
       cursor: default;
       z-index: 10;
     }
+
     @keyframes heartBeat {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.3); }
     }
+
     /* Pétalas caindo */
     .petala {
       position: fixed;
@@ -121,7 +145,26 @@
 </head>
 <body>
   <h1>Para você, minha princesa 💖</h1>
-  <p id="texto">Maria Clara,
+
+  <button id="botao-clique">Clique aqui</button>
+
+  <div id="fotos">
+    <div class="carousel">
+      <img src="foto 0.jpg" alt="Foto 0" class="active" />
+      <img src="foto 1.jpg" alt="Foto 1" />
+      <img src="foto 2.jpg" alt="Foto 2" />
+      <img src="foto 3.jpg" alt="Foto 3" />
+      <img src="foto 4.jpg" alt="Foto 4" />
+      <img src="foto 5.jpg" alt="Foto 5" />
+      <img src="foto 6.jpg" alt="Foto 6" />
+      <img src="foto 7.jpg" alt="Foto 7" />
+      <img src="foto 8.jpg" alt="Foto 8" />
+      <img src="foto 9.jpg" alt="Foto 9" />
+    </div>
+  </div>
+
+  <div id="conteudo">
+    <p id="texto">Maria Clara,
 
 Desde que você entrou na minha vida, tudo ganhou mais cor, mais sentido e mais alegria. Seu sorriso ilumina meus dias e seu jeito doce me faz acreditar que o amor verdadeiro existe. Com você, aprendi que estar junto é construir sonhos, compartilhar momentos e crescer lado a lado.
 
@@ -133,23 +176,7 @@ Para sempre seu,
 Sávio Felipe
  🌹</p>
 
-  <div id="contador-namoro"></div>
-
-  <button id="botao-clique" style="margin: 20px auto; padding: 10px 20px; font-size: 1.2em; border-radius: 10px; border: none; background-color: #d6336c; color: white; cursor: pointer;">
-    Clique aqui
-  </button>
-
-  <div class="carousel">
-    <img src="foto 0.jpg" alt="Foto 0" class="active" />
-    <img src="foto 1.jpg" alt="Foto 1" />
-    <img src="foto 2.jpg" alt="Foto 2" />
-    <img src="foto 3.jpg" alt="Foto 3" />
-    <img src="foto 4.jpg" alt="Foto 4" />
-    <img src="foto 5.jpg" alt="Foto 5" />
-    <img src="foto 6.jpg" alt="Foto 6" />
-    <img src="foto 7.jpg" alt="Foto 7" />
-    <img src="foto 8.jpg" alt="Foto 8" />
-    <img src="foto 9.jpg" alt="Foto 9" />
+    <div id="contador-namoro"></div>
   </div>
 
   <audio autoplay loop>
@@ -159,6 +186,17 @@ Sávio Felipe
   <div class="heart">❤️</div>
 
   <script>
+    // Mostrar fotos e texto ao clicar no botão
+    const botao = document.getElementById('botao-clique');
+    const fotos = document.getElementById('fotos');
+    const conteudo = document.getElementById('conteudo');
+
+    botao.addEventListener('click', () => {
+      fotos.style.display = 'block';
+      conteudo.style.display = 'block';
+      botao.style.display = 'none'; // Esconde o botão depois do clique
+    });
+
     // Carrossel de fotos
     const images = document.querySelectorAll('.carousel img');
     let current = 0;
@@ -204,11 +242,6 @@ Sávio Felipe
 
     setInterval(atualizarContador, 1000);
     atualizarContador();
-
-    // Botão clique aqui
-    document.getElementById('botao-clique').addEventListener('click', () => {
-      alert('Você clicou no botão! ❤️');
-    });
   </script>
 </body>
 </html>
