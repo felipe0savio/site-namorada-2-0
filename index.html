@@ -12,6 +12,8 @@
       text-align: center;
       padding: 40px 20px;
       overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
     }
 
     h1 {
@@ -20,12 +22,14 @@
       animation: pulse 2s infinite;
     }
 
-    p {
+    #texto {
       font-size: 1.4em;
       margin: 20px auto;
       max-width: 600px;
       line-height: 1.6;
       color: #b42e59;
+      min-height: 180px; /* para evitar "pular" na digitação */
+      white-space: pre-wrap;
     }
 
     .carousel {
@@ -62,18 +66,82 @@
       animation: heartBeat 1.5s infinite;
       user-select: none;
       cursor: default;
+      z-index: 10;
     }
 
     @keyframes heartBeat {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.3); }
     }
+
+    /* Pétalas caindo */
+    .petala {
+      position: fixed;
+      top: -50px;
+      width: 30px;
+      height: 30px;
+      background: url('https://i.imgur.com/yhF2LMK.png') no-repeat center/contain;
+      opacity: 0.8;
+      animation-name: cair;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      pointer-events: none;
+      z-index: 5;
+      filter: drop-shadow(0 0 1px #d6336c);
+    }
+
+    @keyframes cair {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Player YouTube estilo */
+    .youtube-player {
+      margin: 20px auto;
+      max-width: 320px;
+      box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
+      border-radius: 12px;
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>
+
   <h1>Para você, minha princesa 💖</h1>
-  <p>
-   Maria Clara,
+  <p id="texto"></p>
+
+  <div class="carousel">
+    <img src="foto 0.jpg" alt="Foto 0" class="active" />
+    <img src="foto 1.jpg" alt="Foto 1" />
+    <img src="foto 2.jpg" alt="Foto 2" />
+    <img src="foto 3.jpg" alt="Foto 3" />
+    <img src="foto 4.jpg" alt="Foto 4" />
+    <img src="foto 5.jpg" alt="Foto 5" />
+    <img src="foto 6.jpg" alt="Foto 6" />
+    <img src="foto 7.jpg" alt="Foto 7" />
+    <img src="foto 8.jpg" alt="Foto 8" />
+    <img src="foto 9.jpg" alt="Foto 9" />
+  </div>
+
+  <div class="youtube-player">
+    <iframe width="320" height="180" 
+      src="https://www.youtube.com/embed/ZevlJp_5rls?autoplay=1&loop=1&playlist=ZevlJp_5rls&mute=0" 
+      title="Jorge & Mateus - Quando o Sol Chegar" frameborder="0" 
+      allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="heart">❤️</div>
+
+  <script>
+    // Máquina de escrever
+    const texto = `Maria Clara,
 
 Desde que você entrou na minha vida, tudo ganhou mais cor, mais sentido e mais alegria. Seu sorriso ilumina meus dias e seu jeito doce me faz acreditar que o amor verdadeiro existe. Com você, aprendi que estar junto é construir sonhos, compartilhar momentos e crescer lado a lado.
 
@@ -83,26 +151,21 @@ Maria Clara, eu te amo de um jeito simples, mas intenso. Quero caminhar com voc�
 
 Para sempre seu,
 Sávio Felipe
- 🌹
-  </p>
+ 🌹`;
 
-<div class="carousel">
-  <img src="foto 0.jpg" alt="Foto 0" class="active" />
-  <img src="foto 1.jpg" alt="Foto 1" />
-  <img src="foto 2.jpg" alt="Foto 2" />
-  <img src="foto 3.jpg" alt="Foto 3" />
-  <img src="foto 4.jpg" alt="Foto 4" />
-  <img src="foto 5.jpg" alt="Foto 5" />
-  <img src="foto 6.jpg" alt="Foto 6" />
-  <img src="foto 7.jpg" alt="Foto 7" />
-  <img src="foto 8.jpg" alt="Foto 8" />
-  <img src="foto 9.jpg" alt="Foto 9" />
-</div>
+    const textoElemento = document.getElementById('texto');
+    let index = 0;
 
+    function escrever() {
+      if (index < texto.length) {
+        textoElemento.textContent += texto.charAt(index);
+        index++;
+        setTimeout(escrever, 40);
+      }
+    }
+    escrever();
 
-  <div class="heart">❤️</div>
-
-  <script>
+    // Carrossel de fotos
     const images = document.querySelectorAll('.carousel img');
     let current = 0;
 
@@ -111,13 +174,7 @@ Sávio Felipe
       current = (current + 1) % images.length;
       images[current].classList.add('active');
     }
-
-    setInterval(showNextImage, 4000); // troca a cada 4 segundos
+    setInterval(showNextImage, 4000);
   </script>
 </body>
 </html>
-
-
-
-
-
