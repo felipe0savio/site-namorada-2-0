@@ -64,13 +64,14 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.3); }
     }
+    /* Pétalas caindo */
     .petala {
       position: fixed;
-      top: -50px;
+      top: -40px;
       width: 30px;
       height: 30px;
-      background: url('https://i.imgur.com/yhF2LMK.png') no-repeat center/contain;
-      opacity: 0.8;
+      background: url('https://i.imgur.com/YkRgnmR.png') no-repeat center/contain;
+      opacity: 0.9;
       animation-name: cair;
       animation-timing-function: linear;
       animation-iteration-count: infinite;
@@ -81,7 +82,7 @@
     @keyframes cair {
       0% {
         transform: translateY(0) rotate(0deg);
-        opacity: 0.8;
+        opacity: 0.9;
       }
       100% {
         transform: translateY(100vh) rotate(360deg);
@@ -193,6 +194,17 @@ Sávio Felipe
     function criarPetala() {
       const petala = document.createElement('div');
       petala.classList.add('petala');
-      petala.style.left = Math.random() * window.inner
-::contentReference[oaicite:42]{index=42}
- 
+      petala.style.left = Math.random() * window.innerWidth + 'px';
+      petala.style.animationDuration = (5 + Math.random() * 5) + 's';
+      petala.style.opacity = 0.7 + Math.random() * 0.3;
+      document.body.appendChild(petala);
+
+      setTimeout(() => {
+        petala.remove();
+      }, 10000);
+    }
+
+    setInterval(criarPetala, 300);
+  </script>
+</body>
+</html>
