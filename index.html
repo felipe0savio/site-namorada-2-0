@@ -27,6 +27,12 @@
       z-index: 0;
     }
 
+    #conteudo {
+      display: none; /* conteúdo escondido até clicar no botão */
+      position: relative;
+      z-index: 1;
+    }
+
     h1 {
       font-size: 3em;
       margin-bottom: 10px;
@@ -76,21 +82,22 @@
       display: block;
     }
 
-    button#next-btn {
+    #btnAbrir {
       background-color: #d6336c;
       border: none;
       color: white;
-      padding: 12px 25px;
-      font-size: 1.2em;
-      border-radius: 25px;
+      padding: 15px 30px;
+      font-size: 1.5em;
+      border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 5px 10px rgba(214, 51, 108, 0.7);
+      box-shadow: 0 5px 15px rgba(214, 51, 108, 0.7);
       transition: background-color 0.3s ease;
       position: relative;
       z-index: 1;
+      margin-top: 150px;
     }
 
-    button#next-btn:hover {
+    #btnAbrir:hover {
       background-color: #a1274a;
     }
 
@@ -144,78 +151,93 @@
     }
 
     audio {
-      display: none; /* escondendo o player */
+      display: none; /* esconde o player */
     }
   </style>
 </head>
 <body>
-  <h1>Para você, minha princesa 💖</h1>
-  
-  <div id="contador-namoro"></div>
 
-  <div class="carousel">
-    <img src="foto 0.jpg" alt="Foto 0" class="active" />
-    <img src="foto 1.jpg" alt="Foto 1" />
-    <img src="foto 2.jpg" alt="Foto 2" />
-    <img src="foto 3.jpg" alt="Foto 3" />
-    <img src="foto 4.jpg" alt="Foto 4" />
-    <img src="foto 5.jpg" alt="Foto 5" />
-    <img src="foto 6.jpg" alt="Foto 6" />
-    <img src="foto 7.jpg" alt="Foto 7" />
-    <img src="foto 8.png" alt="Foto 8" />
-    <img src="foto 9.png" alt="Foto 9" />
+  <button id="btnAbrir">Clique aqui para ver minha surpresa 💖</button>
+
+  <div id="conteudo">
+    <h1>Para você, minha princesa 💖</h1>
+    
+    <div id="contador-namoro"></div>
+
+    <div class="carousel">
+      <img src="foto 0.jpg" alt="Foto 0" class="active" />
+      <img src="foto 1.jpg" alt="Foto 1" />
+      <img src="foto 2.jpg" alt="Foto 2" />
+      <img src="foto 3.jpg" alt="Foto 3" />
+      <img src="foto 4.jpg" alt="Foto 4" />
+      <img src="foto 5.jpg" alt="Foto 5" />
+      <img src="foto 6.jpg" alt="Foto 6" />
+      <img src="foto 7.jpg" alt="Foto 7" />
+      <img src="foto 8.png" alt="Foto 8" />
+      <img src="foto 9.png" alt="Foto 9" />
+    </div>
+
+    <p id="texto"></p>
+
+    <audio autoplay loop>
+      <source src="sol.mpeg" type="audio/mpeg" />
+    </audio>
+
+    <div class="heart">❤️</div>
   </div>
 
-  <button id="next-btn">Clique aqui para próxima foto e texto</button>
-
-  <p id="texto"></p>
-
-  <audio autoplay loop>
-    <source src="sol.mpeg" type="audio/mpeg" />
-  </audio>
-
-  <div class="heart">❤️</div>
-
   <script>
-    // Contador de tempo de namoro
-    const dataInicioNamoro = new Date('2024-03-28T21:31:00');
+    // Evento botão para abrir conteúdo
+    const btnAbrir = document.getElementById('btnAbrir');
+    const conteudo = document.getElementById('conteudo');
 
-    function atualizarContador() {
-      const agora = new Date();
+    btnAbrir.addEventListener('click', () => {
+      btnAbrir.style.display = 'none';
+      conteudo.style.display = 'block';
+      iniciarSite();
+    });
 
-      let anos = agora.getFullYear() - dataInicioNamoro.getFullYear();
+    // Função para iniciar funcionalidades do site
+    function iniciarSite() {
+      // Contador de tempo de namoro
+      const dataInicioNamoro = new Date('2024-03-28T21:31:00');
 
-      const aniversarioEsteAno = new Date(agora.getFullYear(), dataInicioNamoro.getMonth(), dataInicioNamoro.getDate(), dataInicioNamoro.getHours(), dataInicioNamoro.getMinutes(), dataInicioNamoro.getSeconds());
-      if (agora < aniversarioEsteAno) {
-        anos--;
+      function atualizarContador() {
+        const agora = new Date();
+
+        let anos = agora.getFullYear() - dataInicioNamoro.getFullYear();
+
+        const aniversarioEsteAno = new Date(agora.getFullYear(), dataInicioNamoro.getMonth(), dataInicioNamoro.getDate(), dataInicioNamoro.getHours(), dataInicioNamoro.getMinutes(), dataInicioNamoro.getSeconds());
+        if (agora < aniversarioEsteAno) {
+          anos--;
+        }
+
+        const ultimoAniversario = new Date(dataInicioNamoro);
+        ultimoAniversario.setFullYear(dataInicioNamoro.getFullYear() + anos);
+
+        let diff = agora - ultimoAniversario;
+
+        const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        diff -= dias * (1000 * 60 * 60 * 24);
+
+        const horas = Math.floor(diff / (1000 * 60 * 60));
+        diff -= horas * (1000 * 60 * 60);
+
+        const minutos = Math.floor(diff / (1000 * 60));
+        diff -= minutos * (1000 * 60);
+
+        const segundos = Math.floor(diff / 1000);
+
+        const textoContador = `Estamos juntos há ${anos} ano${anos !== 1 ? 's' : ''}, ${dias} dia${dias !== 1 ? 's' : ''}, ${horas} hora${horas !== 1 ? 's' : ''}, ${minutos} minuto${minutos !== 1 ? 's' : ''} e ${segundos} segundo${segundos !== 1 ? 's' : ''} ❤️`;
+
+        document.getElementById('contador-namoro').textContent = textoContador;
       }
+      setInterval(atualizarContador, 1000);
+      atualizarContador();
 
-      const ultimoAniversario = new Date(dataInicioNamoro);
-      ultimoAniversario.setFullYear(dataInicioNamoro.getFullYear() + anos);
-
-      let diff = agora - ultimoAniversario;
-
-      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-      diff -= dias * (1000 * 60 * 60 * 24);
-
-      const horas = Math.floor(diff / (1000 * 60 * 60));
-      diff -= horas * (1000 * 60 * 60);
-
-      const minutos = Math.floor(diff / (1000 * 60));
-      diff -= minutos * (1000 * 60);
-
-      const segundos = Math.floor(diff / 1000);
-
-      const textoContador = `Estamos juntos há ${anos} ano${anos !== 1 ? 's' : ''}, ${dias} dia${dias !== 1 ? 's' : ''}, ${horas} hora${horas !== 1 ? 's' : ''}, ${minutos} minuto${minutos !== 1 ? 's' : ''} e ${segundos} segundo${segundos !== 1 ? 's' : ''} ❤️`;
-
-      document.getElementById('contador-namoro').textContent = textoContador;
-    }
-    setInterval(atualizarContador, 1000);
-    atualizarContador();
-
-    // Textos para mostrar ao clicar
-    const textos = [
-      `Maria Clara,
+      // Textos para mostrar (pode colocar mais se quiser)
+      const textos = [
+        `Maria Clara,
 
 Desde que você entrou na minha vida, tudo ganhou mais cor, mais sentido e mais alegria. Seu sorriso ilumina meus dias e seu jeito doce me faz acreditar que o amor verdadeiro existe. Com você, aprendi que estar junto é construir sonhos, compartilhar momentos e crescer lado a lado.
 
@@ -226,33 +248,31 @@ Maria Clara, eu te amo de um jeito simples, mas intenso. Quero caminhar com voc�
 Para sempre seu,
 Sávio Felipe
 🌹`
-    // Pode adicionar mais mensagens no array se quiser
-    ];
+      ];
 
-    const textoElemento = document.getElementById('texto');
-    let textoIndex = 0;
+      const textoElemento = document.getElementById('texto');
+      let textoIndex = 0;
 
-    // Fotos e textos estão sincronizados: ao mudar foto, muda texto
-    const images = document.querySelectorAll('.carousel img');
-    let current = 0;
+      // Fotos sincronizadas com texto
+      const images = document.querySelectorAll('.carousel img');
+      let current = 0;
 
-    // Função para avançar foto e texto
-    function avancar() {
-      // Avança foto
-      images[current].classList.remove('active');
-      current = (current + 1) % images.length;
-      images[current].classList.add('active');
+      // Função para avançar foto e texto
+      function avancar() {
+        images[current].classList.remove('active');
+        current = (current + 1) % images.length;
+        images[current].classList.add('active');
 
-      // Avança texto (no seu caso só 1 texto, mas pode adicionar mais textos e sincronizar)
-      textoIndex = (textoIndex + 1) % textos.length;
+        textoIndex = (textoIndex + 1) % textos.length;
+        textoElemento.textContent = textos[textoIndex];
+      }
+
+      // Mostra o texto inicial
       textoElemento.textContent = textos[textoIndex];
+
+      // Adiciona clique para avançar fotos/texto
+      document.body.addEventListener('click', avancar);
     }
-
-    // Botão para avançar
-    document.getElementById('next-btn').addEventListener('click', avancar);
-
-    // Inicializa com texto da primeira posição
-    textoElemento.textContent = textos[textoIndex];
   </script>
 </body>
 </html>
