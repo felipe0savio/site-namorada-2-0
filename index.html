@@ -70,7 +70,7 @@
       top: -40px;
       width: 30px;
       height: 30px;
-      background: url('https://i.imgur.com/YkRgnmR.png') no-repeat center/contain;
+      background: url('petala.png') no-repeat center/contain; /* imagem local */
       opacity: 0.9;
       animation-name: cair;
       animation-timing-function: linear;
@@ -90,12 +90,7 @@
       }
     }
     audio {
-      margin: 20px auto;
-      width: 320px;
-      outline: none;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
-      display: block;
+      display: none; /* escondendo o player */
     }
   </style>
 </head>
@@ -116,9 +111,8 @@
     <img src="foto 9.jpg" alt="Foto 9" />
   </div>
 
-  <audio controls autoplay loop>
+  <audio autoplay loop>
     <source src="sol.mpeg" type="audio/mpeg" />
-    Seu navegador não suporta áudio HTML5.
   </audio>
 
   <div class="heart">❤️</div>
