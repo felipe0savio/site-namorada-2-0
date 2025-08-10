@@ -89,25 +89,13 @@
         opacity: 0;
       }
     }
-    .youtube-player {
+    audio {
       margin: 20px auto;
-      max-width: 320px;
-      box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
+      width: 320px;
+      outline: none;
       border-radius: 12px;
-      overflow: hidden;
-    }
-    #toggle-sound {
-      margin: 10px auto;
+      box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
       display: block;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 8px;
-      background: #d6336c;
-      color: #fff;
-      border: none;
-      max-width: 320px;
-      box-shadow: 0 0 8px rgba(214, 51, 108, 0.8);
     }
   </style>
 </head>
@@ -128,11 +116,10 @@
     <img src="foto 9.jpg" alt="Foto 9" />
   </div>
 
-  <div class="youtube-player">
-    <iframe width="320" height="180" src="https://www.youtube.com/embed/51lOFuCR7dE?autoplay=1&loop=1&playlist=51lOFuCR7dE&mute=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>
-
-  <button id="toggle-sound">🔈 Ativar Som</button>
+  <audio controls autoplay loop>
+    <source src="sol.mpeg" type="audio/mpeg" />
+    Seu navegador não suporta áudio HTML5.
+  </audio>
 
   <div class="heart">❤️</div>
 
@@ -172,23 +159,6 @@ Sávio Felipe
       images[current].classList.add('active');
     }
     setInterval(showNextImage, 4000);
-
-    // Controle de som do YouTube
-    const toggleSoundBtn = document.getElementById('toggle-sound');
-    const ytplayer = document.querySelector('iframe');
-    let isMuted = true;
-
-    toggleSoundBtn.addEventListener('click', () => {
-      if (isMuted) {
-        ytplayer.src = ytplayer.src.replace('mute=1', 'mute=0');
-        toggleSoundBtn.textContent = '🔇 Mudo';
-        isMuted = false;
-      } else {
-        ytplayer.src = ytplayer.src.replace('mute=0', 'mute=1');
-        toggleSoundBtn.textContent = '🔈 Ativar Som';
-        isMuted = true;
-      }
-    });
 
     // Criar pétalas caindo
     function criarPetala() {
