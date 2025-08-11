@@ -10,7 +10,7 @@
       font-family: 'Comic Sans MS', cursive, sans-serif;
       color: #d6336c;
       text-align: center;
-      padding: 80px 20px 40px 20px; /* padding-top maior para espaço da animação */
+      padding: 40px 20px;
       overflow-x: hidden;
       position: relative;
       min-height: 100vh;
@@ -27,28 +27,42 @@
       z-index: 0;
     }
 
-    /* Animação do nome no topo */
+    /* Animação dos nomes flutuando pela tela */
     #animacao-nomes {
       position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      text-align: center;
-      z-index: 1000; /* acima de tudo */
-      pointer-events: none;
+      top: 10vh;
+      left: 10vw;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       font-weight: bold;
       font-size: 2.5em;
       color: #d6336c;
       user-select: none;
+      pointer-events: none; /* Não interfere em cliques */
       filter: drop-shadow(0 0 5px #a1274a);
-      animation: flutuar 6s ease-in-out infinite;
+      z-index: 10;
+      animation: mover 20s ease-in-out infinite alternate;
     }
 
-    @keyframes flutuar {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-15px); }
+    /* Para movimentação aleatória e suave */
+    @keyframes mover {
+      0% {
+        transform: translate(0, 0);
+      }
+      20% {
+        transform: translate(30vw, 10vh);
+      }
+      40% {
+        transform: translate(50vw, 5vh);
+      }
+      60% {
+        transform: translate(40vw, 30vh);
+      }
+      80% {
+        transform: translate(20vw, 35vh);
+      }
+      100% {
+        transform: translate(10vw, 10vh);
+      }
     }
 
     #conteudo {
@@ -181,7 +195,7 @@
 </head>
 <body>
 
-  <!-- Animação com nomes -->
+  <!-- Animação com nomes flutuando e se movendo -->
   <div id="animacao-nomes">Sávio &amp; Maria Clara</div>
 
   <button id="btnAbrir">CLIQUE AQUI💖</button>
