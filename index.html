@@ -154,31 +154,25 @@
       display: none; /* esconde o player */
     }
 
-    /* Fundo animado dos nomes */
+    /* Fundo dos nomes animados */
     #nomes-fundo {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 300px;
-      height: 300px;
-      margin-left: -150px; /* metade da largura */
-      margin-top: -150px;  /* metade da altura */
+      top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       z-index: 1; /* atrás do conteúdo */
-      user-select: none;
+      overflow: hidden;
     }
 
     #nomes-fundo span {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform-origin: 0 0;
-      font-size: 2em;
+      font-size: 12px;
       font-weight: bold;
-      color: rgba(214, 51, 108, 0.15); /* cor suave para não competir */
+      color: rgba(214, 51, 108, 0.12);
       text-transform: uppercase;
       white-space: nowrap;
       font-family: 'Arial Black', Arial, sans-serif;
+      user-select: none;
+      will-change: transform;
     }
   </style>
 </head>
@@ -213,7 +207,7 @@
     <div class="heart">❤️</div>
   </div>
 
-  <!-- Fundo animado com nomes -->
+  <!-- Fundo dos nomes animados -->
   <div id="nomes-fundo"></div>
 
   <script>
@@ -304,45 +298,68 @@ Sávio Felipe
 
       document.body.addEventListener('click', avancar);
 
-      // Fundo animado com vários nomes girando
-      const nomes = [];
-      const numNomes = 8;  // quantos nomes vão girar no fundo
-      const radius = 120;  // tamanho do círculo em px
-      const centerX = 150; // centro da div (metade da largura)
-      const centerY = 150; // centro da div (metade da altura)
+      // Fundo dos nomes animados - vários nomes pequenos flutuando
+      const nomesTexto = "SÁVIO & MARIA CLARA";
+      const numNomes = 50;
+      const nomesArray = [];
 
-      // Cria os spans com os nomes e adiciona no fundo
-      for (let i = 0; i < numNomes; i++) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      for(let i=0; i<numNomes; i++) {
         const span = document.createElement('span');
-        span.textContent = "SÁVIO & MARIA CLARA";
-        // posicionamento inicial no centro para animar depois
-        span.style.left = `${centerX}px`;
-        span.style.top = `${centerY}px`;
+        span.textContent = nomesTexto;
+        // posição aleatória inicial
+        span.style.left = Math.random() * vw + 'px';
+        span.style.top = Math.random() * vh + 'px';
+        // tamanho pequeno aleatório para dar variedade
+        const size = 8 + Math.random() * 10; // 8px a 18px
+        span.style.fontSize = size + 'px';
         nomesFundo.appendChild(span);
-        nomes.push(span);
+
+        // velocidade e direção para movimentar
+        nomesArray.push({
+          el: span,
+          x: parseFloat(span.style.left),
+          y: parseFloat(span.style.top),
+          size: size,
+          vx: (Math.random() - 0.5) * 0.3, // velocidade horizontal
+          vy: (Math.random() - 0.5) * 0.3, // velocidade vertical
+          angle: Math.random() * 360,
+          va: (Math.random() - 0.5) * 0.5 // velocidade rotação
+        });
       }
 
-      let angle = 0;
+      function animarNomes() {
+        nomesArray.forEach(nome => {
+          nome.x += nome.vx;
+          nome.y += nome.vy;
+          nome.angle += nome.va;
 
-      function animarNomesFundo() {
-        angle += 0.005; // velocidade suave
+          // manter dentro da tela (bounce simples)
+          if(nome.x < 0) { nome.x = 0; nome.vx *= -1; }
+          if(nome.x > vw) { nome.x = vw; nome.vx *= -1; }
+          if(nome.y < 0) { nome.y = 0; nome.vy *= -1; }
+          if(nome.y > vh) { nome.y = vh; nome.vy *= -1; }
 
-        nomes.forEach((nome, index) => {
-          // Divide o círculo para os nomes, para ficarem espaçados
-          const anguloNome = angle + (index * (2 * Math.PI / numNomes));
-          const x = centerX + radius * Math.cos(anguloNome);
-          const y = centerY + radius * Math.sin(anguloNome);
-          nome.style.left = `${x}px`;
-          nome.style.top = `${y}px`;
-          // Opcional: pode rotacionar o texto para ficar tangente ao círculo
-          const graus = (anguloNome * 180 / Math.PI) + 90;
-          nome.style.transform = `translate(-50%, -50%) rotate(${graus}deg)`;
+          nome.el.style.left = nome.x + 'px';
+          nome.el.style.top = nome.y + 'px';
+          nome.el.style.transform = `translate(-50%, -50%) rotate(${nome.angle}deg)`;
+          nome.el.style.fontSize = nome.size + 'px';
         });
 
-        requestAnimationFrame(animarNomesFundo);
+        requestAnimationFrame(animarNomes);
       }
 
-      animarNomesFundo();
+      animarNomes();
+
+      // Atualizar vw e vh no resize para manter a animação dentro da tela
+      window.addEventListener('resize', () => {
+        nomesArray.forEach(nome => {
+          nome.x = Math.min(nome.x, window.innerWidth);
+          nome.y = Math.min(nome.y, window.innerHeight);
+        });
+      });
     }
   </script>
 </body>
