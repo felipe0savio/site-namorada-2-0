@@ -248,6 +248,12 @@
         console.log("Clique para liberar a reprodução da música.");
       });
 
+      // Para a música após 40 segundos
+      setTimeout(() => {
+        musica.pause();
+        musica.currentTime = 0;
+      }, 40000);
+
       iniciarSite();
     });
 
@@ -393,8 +399,8 @@ Sávio Felipe
         heart.classList.add('explosion-heart');
         heart.textContent = '❤️';
 
-        // Tamanhos variados e maiores
-        const size = 14 + Math.random() * 14;
+        // Tamanhos 3x maiores que antes
+        const size = (14 + Math.random() * 14) * 3;
         heart.style.fontSize = size + 'px';
 
         // Posiciona no centro do botão
