@@ -27,44 +27,6 @@
       z-index: 0;
     }
 
-    /* Animação dos nomes flutuando pela tela */
-    #animacao-nomes {
-      position: fixed;
-      top: 10vh;
-      left: 10vw;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      font-weight: bold;
-      font-size: 2.5em;
-      color: #d6336c;
-      user-select: none;
-      pointer-events: none; /* Não interfere em cliques */
-      filter: drop-shadow(0 0 5px #a1274a);
-      z-index: 10;
-      animation: mover 20s ease-in-out infinite alternate;
-    }
-
-    /* Para movimentação aleatória e suave */
-    @keyframes mover {
-      0% {
-        transform: translate(0, 0);
-      }
-      20% {
-        transform: translate(30vw, 10vh);
-      }
-      40% {
-        transform: translate(50vw, 5vh);
-      }
-      60% {
-        transform: translate(40vw, 30vh);
-      }
-      80% {
-        transform: translate(20vw, 35vh);
-      }
-      100% {
-        transform: translate(10vw, 10vh);
-      }
-    }
-
     #conteudo {
       display: none; /* conteúdo escondido até clicar no botão */
       position: relative;
@@ -191,12 +153,35 @@
     audio {
       display: none; /* esconde o player */
     }
+
+    /* Animação circular para os nomes */
+    #nomes-animados {
+      position: fixed;
+      top: 50%; /* centraliza vertical */
+      left: 50%; /* centraliza horizontal */
+      width: 200px;
+      height: 200px;
+      margin-left: -100px; /* metade da largura para centralizar */
+      margin-top: -100px;  /* metade da altura para centralizar */
+      pointer-events: none; /* para não interferir nos cliques */
+      z-index: 20; /* na frente de quase tudo */
+    }
+
+    #nomes-animados span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0 0; /* ponto de rotação na esquerda */
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #d6336c;
+      user-select: none;
+      white-space: nowrap;
+    }
+
   </style>
 </head>
 <body>
-
-  <!-- Animação com nomes flutuando e se movendo -->
-  <div id="animacao-nomes">Sávio &amp; Maria Clara</div>
 
   <button id="btnAbrir">CLIQUE AQUI💖</button>
 
@@ -225,6 +210,12 @@
     </audio>
 
     <div class="heart">❤️</div>
+  </div>
+
+  <!-- Div para nomes animados -->
+  <div id="nomes-animados">
+    <span id="nome1">Sávio &nbsp;</span>
+    <span id="nome2">Maria Clara</span>
   </div>
 
   <script>
@@ -315,6 +306,37 @@ Sávio Felipe
       textoElemento.textContent = textos[textoIndex];
 
       document.body.addEventListener('click', avancar);
+
+      // Animação circular dos nomes
+      const nome1 = document.getElementById('nome1');
+      const nome2 = document.getElementById('nome2');
+      const container = document.getElementById('nomes-animados');
+
+      let angle = 0;
+      const radius = 80; // raio do círculo em px
+      const centerX = 100; // centro no container (metade da largura)
+      const centerY = 100; // centro no container (metade da altura)
+
+      function animarNomes() {
+        angle += 0.01; // velocidade do movimento
+        if (angle > 2 * Math.PI) angle -= 2 * Math.PI;
+
+        // Posiciona os dois nomes em lados opostos do círculo (180 graus)
+        const x1 = centerX + radius * Math.cos(angle);
+        const y1 = centerY + radius * Math.sin(angle);
+        const x2 = centerX + radius * Math.cos(angle + Math.PI);
+        const y2 = centerY + radius * Math.sin(angle + Math.PI);
+
+        nome1.style.left = `${x1}px`;
+        nome1.style.top = `${y1}px`;
+
+        nome2.style.left = `${x2}px`;
+        nome2.style.top = `${y2}px`;
+
+        requestAnimationFrame(animarNomes);
+      }
+
+      animarNomes();
     }
   </script>
 </body>
