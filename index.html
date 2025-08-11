@@ -153,9 +153,39 @@
     audio {
       display: none; /* esconde o player */
     }
+
+    /* Animação do nome no topo */
+    #animacao-nomes {
+      position: fixed;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      z-index: 20;
+      pointer-events: none;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-weight: bold;
+      font-size: 2.5em;
+      color: #d6336c;
+      user-select: none;
+      filter: drop-shadow(0 0 5px #a1274a);
+      animation: flutuar 6s ease-in-out infinite;
+    }
+
+    @keyframes flutuar {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- Nomes animados no topo -->
+  <div id="animacao-nomes">Sávio &amp; Maria Clara</div>
 
   <button id="btnAbrir">CLIQUE AQUI💖</button>
 
@@ -198,7 +228,6 @@
 
       // Toca a música quando clicar
       musica.play().catch(() => {
-        // Caso o navegador bloqueie, pode tratar aqui se quiser
         console.log("Clique para liberar a reprodução da música.");
       });
 
