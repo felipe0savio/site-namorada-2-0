@@ -179,7 +179,7 @@
 
     <p id="texto"></p>
 
-    <audio autoplay loop>
+    <audio id="musica" loop>
       <source src="sol.mpeg" type="audio/mpeg" />
     </audio>
 
@@ -187,19 +187,26 @@
   </div>
 
   <script>
-    // Evento botão para abrir conteúdo
+    // Elementos
     const btnAbrir = document.getElementById('btnAbrir');
     const conteudo = document.getElementById('conteudo');
+    const musica = document.getElementById('musica');
 
     btnAbrir.addEventListener('click', () => {
       btnAbrir.style.display = 'none';
       conteudo.style.display = 'block';
+
+      // Toca a música quando clicar
+      musica.play().catch(() => {
+        // Caso o navegador bloqueie, pode tratar aqui se quiser
+        console.log("Clique para liberar a reprodução da música.");
+      });
+
       iniciarSite();
     });
 
-    // Função para iniciar funcionalidades do site
     function iniciarSite() {
-      // Contador de tempo de namoro
+      // Contador namoro
       const dataInicioNamoro = new Date('2024-03-28T21:31:00');
 
       function atualizarContador() {
@@ -235,7 +242,7 @@
       setInterval(atualizarContador, 1000);
       atualizarContador();
 
-      // Textos para mostrar (pode colocar mais se quiser)
+      // Textos
       const textos = [
         `Maria Clara,
 
@@ -253,11 +260,9 @@ Sávio Felipe
       const textoElemento = document.getElementById('texto');
       let textoIndex = 0;
 
-      // Fotos sincronizadas com texto
       const images = document.querySelectorAll('.carousel img');
       let current = 0;
 
-      // Função para avançar foto e texto
       function avancar() {
         images[current].classList.remove('active');
         current = (current + 1) % images.length;
@@ -267,13 +272,10 @@ Sávio Felipe
         textoElemento.textContent = textos[textoIndex];
       }
 
-      // Mostra o texto inicial
       textoElemento.textContent = textos[textoIndex];
 
-      // Adiciona clique para avançar fotos/texto
       document.body.addEventListener('click', avancar);
     }
   </script>
 </body>
 </html>
-
