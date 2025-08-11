@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mensagem para Minha Namorada 💖</title>
   <style>
-    /* seu CSS aqui (mantive seu original) */
     body {
       background: #ffe6f0;
       font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -16,7 +15,53 @@
       position: relative;
       min-height: 100vh;
     }
-    /* ... (outros estilos mantidos) ... */
+
+    /* Fundo animado rosas.gif */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('rosas.gif') center center / cover no-repeat;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #conteudo {
+      display: none; /* conteúdo escondido até clicar no botão */
+      position: relative;
+      z-index: 10; /* acima do fundo dos nomes */
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+      position: relative;
+      z-index: 10;
+    }
+
+    #contador-namoro {
+      font-size: 1.2em;
+      color: #a12a50;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 10;
+      font-weight: bold;
+    }
+
+    #texto {
+      font-size: 1.4em;
+      margin: 20px auto 40px auto;
+      max-width: 600px;
+      line-height: 1.6;
+      color: #b42e59;
+      min-height: 180px;
+      white-space: pre-wrap;
+      position: relative;
+      z-index: 10;
+    }
+
     .carousel {
       max-width: 320px;
       margin: 0 auto 30px auto;
@@ -24,7 +69,7 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
-      z-index: 1;
+      z-index: 10;
     }
 
     .carousel img {
@@ -36,14 +81,129 @@
     .carousel img.active {
       display: block;
     }
-    /* resto do CSS mantido */
+
+    #btnAbrir {
+      background-color: #d6336c;
+      border: none;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.5em;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(214, 51, 108, 0.7);
+      transition: background-color 0.3s ease;
+      position: relative;
+      z-index: 10;
+      margin-top: 150px;
+      overflow: visible; /* pra explosão não cortar */
+    }
+
+    #btnAbrir:hover {
+      background-color: #a1274a;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .heart {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 2em;
+      color: #ff2e6d;
+      animation: heartBeat 1.5s infinite;
+      user-select: none;
+      cursor: default;
+      z-index: 20;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* Pétalas caindo */
+    .petala {
+      position: fixed;
+      top: -40px;
+      width: 30px;
+      height: 30px;
+      background: url('petala.png') no-repeat center/contain;
+      opacity: 0.9;
+      animation-name: cair;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      pointer-events: none;
+      z-index: 5;
+      filter: drop-shadow(0 0 1px #d6336c);
+    }
+
+    @keyframes cair {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    audio {
+      display: none; /* esconde o player */
+    }
+
+    /* Fundo dos nomes animados */
+    #nomes-fundo {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1; /* atrás do conteúdo */
+      overflow: hidden;
+    }
+
+    #nomes-fundo span {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      color: rgba(214, 51, 108, 0.12);
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-family: 'Arial Black', Arial, sans-serif;
+      user-select: none;
+      will-change: transform;
+    }
+
+    /* Estilos para corações da explosão */
+    .explosion-heart {
+      position: absolute;
+      color: #ff2e6d;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 0 2px #d6336c);
+      animation-fill-mode: forwards;
+      will-change: transform, opacity;
+    }
+
+    @keyframes flyUpFade {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rdeg)) scale(0.5);
+      }
+    }
   </style>
 </head>
 <body>
 
   <button id="btnAbrir">CLIQUE AQUI💖</button>
 
-  <div id="conteudo" style="display:none;">
+  <div id="conteudo">
     <h1>Para você, minha princesa 💖</h1>
     
     <div id="contador-namoro"></div>
@@ -70,21 +230,35 @@
     <div class="heart">❤️</div>
   </div>
 
+  <!-- Fundo dos nomes animados -->
+  <div id="nomes-fundo"></div>
+
   <script>
     const btnAbrir = document.getElementById('btnAbrir');
     const conteudo = document.getElementById('conteudo');
     const musica = document.getElementById('musica');
+    const nomesFundo = document.getElementById('nomes-fundo');
 
     btnAbrir.addEventListener('click', () => {
+      criarExplosaoCorações(btnAbrir);
       btnAbrir.style.display = 'none';
       conteudo.style.display = 'block';
+
       musica.play().catch(() => {
         console.log("Clique para liberar a reprodução da música.");
       });
+
+      // Para a música após 40 segundos
+      setTimeout(() => {
+        musica.pause();
+        musica.currentTime = 0;
+      }, 40000);
+
       iniciarSite();
     });
 
     function iniciarSite() {
+      // Contador namoro
       const dataInicioNamoro = new Date('2024-03-28T21:31:00');
 
       function atualizarContador() {
@@ -120,6 +294,7 @@
       setInterval(atualizarContador, 1000);
       atualizarContador();
 
+      // Textos
       const textos = [
         `Maria Clara,
 
@@ -153,8 +328,108 @@ Sávio Felipe
 
       document.body.addEventListener('click', avancar);
 
-      // Aqui troca automaticamente a foto/texto a cada 2 segundos
+      // Avança as fotos automaticamente a cada 4 segundos
       setInterval(avancar, 2000);
+
+      // Fundo dos nomes animados - vários nomes pequenos flutuando
+      const nomesTexto = "SÁVIO & MARIA CLARA";
+      const numNomes = 50;
+      const nomesArray = [];
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      for(let i=0; i<numNomes; i++) {
+        const span = document.createElement('span');
+        span.textContent = nomesTexto;
+        span.style.left = Math.random() * vw + 'px';
+        span.style.top = Math.random() * vh + 'px';
+        const size = 8 + Math.random() * 10;
+        span.style.fontSize = size + 'px';
+        nomesFundo.appendChild(span);
+
+        nomesArray.push({
+          el: span,
+          x: parseFloat(span.style.left),
+          y: parseFloat(span.style.top),
+          size: size,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          angle: Math.random() * 360,
+          va: (Math.random() - 0.5) * 0.5
+        });
+      }
+
+      function animarNomes() {
+        nomesArray.forEach(nome => {
+          nome.x += nome.vx;
+          nome.y += nome.vy;
+          nome.angle += nome.va;
+
+          if(nome.x < 0) { nome.x = 0; nome.vx *= -1; }
+          if(nome.x > vw) { nome.x = vw; nome.vx *= -1; }
+          if(nome.y < 0) { nome.y = 0; nome.vy *= -1; }
+          if(nome.y > vh) { nome.y = vh; nome.vy *= -1; }
+
+          nome.el.style.left = nome.x + 'px';
+          nome.el.style.top = nome.y + 'px';
+          nome.el.style.transform = `translate(-50%, -50%) rotate(${nome.angle}deg)`;
+          nome.el.style.fontSize = nome.size + 'px';
+        });
+
+        requestAnimationFrame(animarNomes);
+      }
+
+      animarNomes();
+
+      window.addEventListener('resize', () => {
+        nomesArray.forEach(nome => {
+          nome.x = Math.min(nome.x, window.innerWidth);
+          nome.y = Math.min(nome.y, window.innerHeight);
+        });
+      });
+    }
+
+    // Função para criar explosão de corações
+    function criarExplosaoCorações(botao) {
+      const numCoracoes = 50;
+      const rect = botao.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      for(let i=0; i<numCoracoes; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('explosion-heart');
+        heart.textContent = '❤️';
+
+        // Tamanhos 3x maiores que antes
+        const size = (14 + Math.random() * 14) * 3;
+        heart.style.fontSize = size + 'px';
+
+        // Posiciona no centro do botão
+        heart.style.left = centerX + 'px';
+        heart.style.top = centerY + 'px';
+
+        // Ângulo, distância e rotação aleatória para dispersão
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 150 + Math.random() * 150; // até 300px
+        const rotation = (Math.random() * 360) - 180; // -180 a 180 graus
+
+        heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+        heart.style.setProperty('--rdeg', rotation + 'deg');
+
+        // Duração da animação variada (1.2s a 2s)
+        const duration = 1200 + Math.random() * 800;
+        heart.style.animation = `flyUpFade ${duration}ms forwards`;
+
+        document.body.appendChild(heart);
+
+        // Remove após animação
+        heart.addEventListener('animationend', () => {
+          heart.remove();
+        });
+      }
     }
   </script>
 </body>
