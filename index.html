@@ -30,7 +30,7 @@
     #conteudo {
       display: none; /* conteúdo escondido até clicar no botão */
       position: relative;
-      z-index: 1;
+      z-index: 10; /* acima do fundo dos nomes */
     }
 
     h1 {
@@ -38,7 +38,7 @@
       margin-bottom: 10px;
       animation: pulse 2s infinite;
       position: relative;
-      z-index: 1;
+      z-index: 10;
     }
 
     #contador-namoro {
@@ -46,7 +46,7 @@
       color: #a12a50;
       margin-bottom: 20px;
       position: relative;
-      z-index: 1;
+      z-index: 10;
       font-weight: bold;
     }
 
@@ -59,7 +59,7 @@
       min-height: 180px;
       white-space: pre-wrap;
       position: relative;
-      z-index: 1;
+      z-index: 10;
     }
 
     .carousel {
@@ -69,7 +69,7 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(214, 51, 108, 0.5);
-      z-index: 1;
+      z-index: 10;
     }
 
     .carousel img {
@@ -93,7 +93,7 @@
       box-shadow: 0 5px 15px rgba(214, 51, 108, 0.7);
       transition: background-color 0.3s ease;
       position: relative;
-      z-index: 1;
+      z-index: 10;
       margin-top: 150px;
     }
 
@@ -115,7 +115,7 @@
       animation: heartBeat 1.5s infinite;
       user-select: none;
       cursor: default;
-      z-index: 10;
+      z-index: 20;
     }
 
     @keyframes heartBeat {
@@ -154,31 +154,32 @@
       display: none; /* esconde o player */
     }
 
-    /* Animação circular para os nomes */
-    #nomes-animados {
+    /* Fundo animado dos nomes */
+    #nomes-fundo {
       position: fixed;
-      top: 50%; /* centraliza vertical */
-      left: 50%; /* centraliza horizontal */
-      width: 200px;
-      height: 200px;
-      margin-left: -100px; /* metade da largura para centralizar */
-      margin-top: -100px;  /* metade da altura para centralizar */
-      pointer-events: none; /* para não interferir nos cliques */
-      z-index: 20; /* na frente de quase tudo */
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      margin-left: -150px; /* metade da largura */
+      margin-top: -150px;  /* metade da altura */
+      pointer-events: none;
+      z-index: 1; /* atrás do conteúdo */
+      user-select: none;
     }
 
-    #nomes-animados span {
+    #nomes-fundo span {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform-origin: 0 0; /* ponto de rotação na esquerda */
-      font-size: 1.8em;
+      transform-origin: 0 0;
+      font-size: 2em;
       font-weight: bold;
-      color: #d6336c;
-      user-select: none;
+      color: rgba(214, 51, 108, 0.15); /* cor suave para não competir */
+      text-transform: uppercase;
       white-space: nowrap;
+      font-family: 'Arial Black', Arial, sans-serif;
     }
-
   </style>
 </head>
 <body>
@@ -212,23 +213,19 @@
     <div class="heart">❤️</div>
   </div>
 
-  <!-- Div para nomes animados -->
-  <div id="nomes-animados">
-    <span id="nome1">Sávio &nbsp;</span>
-    <span id="nome2">Maria Clara</span>
-  </div>
+  <!-- Fundo animado com nomes -->
+  <div id="nomes-fundo"></div>
 
   <script>
-    // Elementos
     const btnAbrir = document.getElementById('btnAbrir');
     const conteudo = document.getElementById('conteudo');
     const musica = document.getElementById('musica');
+    const nomesFundo = document.getElementById('nomes-fundo');
 
     btnAbrir.addEventListener('click', () => {
       btnAbrir.style.display = 'none';
       conteudo.style.display = 'block';
 
-      // Toca a música quando clicar
       musica.play().catch(() => {
         console.log("Clique para liberar a reprodução da música.");
       });
@@ -307,36 +304,45 @@ Sávio Felipe
 
       document.body.addEventListener('click', avancar);
 
-      // Animação circular dos nomes
-      const nome1 = document.getElementById('nome1');
-      const nome2 = document.getElementById('nome2');
-      const container = document.getElementById('nomes-animados');
+      // Fundo animado com vários nomes girando
+      const nomes = [];
+      const numNomes = 8;  // quantos nomes vão girar no fundo
+      const radius = 120;  // tamanho do círculo em px
+      const centerX = 150; // centro da div (metade da largura)
+      const centerY = 150; // centro da div (metade da altura)
 
-      let angle = 0;
-      const radius = 80; // raio do círculo em px
-      const centerX = 100; // centro no container (metade da largura)
-      const centerY = 100; // centro no container (metade da altura)
-
-      function animarNomes() {
-        angle += 0.01; // velocidade do movimento
-        if (angle > 2 * Math.PI) angle -= 2 * Math.PI;
-
-        // Posiciona os dois nomes em lados opostos do círculo (180 graus)
-        const x1 = centerX + radius * Math.cos(angle);
-        const y1 = centerY + radius * Math.sin(angle);
-        const x2 = centerX + radius * Math.cos(angle + Math.PI);
-        const y2 = centerY + radius * Math.sin(angle + Math.PI);
-
-        nome1.style.left = `${x1}px`;
-        nome1.style.top = `${y1}px`;
-
-        nome2.style.left = `${x2}px`;
-        nome2.style.top = `${y2}px`;
-
-        requestAnimationFrame(animarNomes);
+      // Cria os spans com os nomes e adiciona no fundo
+      for (let i = 0; i < numNomes; i++) {
+        const span = document.createElement('span');
+        span.textContent = "SÁVIO & MARIA CLARA";
+        // posicionamento inicial no centro para animar depois
+        span.style.left = `${centerX}px`;
+        span.style.top = `${centerY}px`;
+        nomesFundo.appendChild(span);
+        nomes.push(span);
       }
 
-      animarNomes();
+      let angle = 0;
+
+      function animarNomesFundo() {
+        angle += 0.005; // velocidade suave
+
+        nomes.forEach((nome, index) => {
+          // Divide o círculo para os nomes, para ficarem espaçados
+          const anguloNome = angle + (index * (2 * Math.PI / numNomes));
+          const x = centerX + radius * Math.cos(anguloNome);
+          const y = centerY + radius * Math.sin(anguloNome);
+          nome.style.left = `${x}px`;
+          nome.style.top = `${y}px`;
+          // Opcional: pode rotacionar o texto para ficar tangente ao círculo
+          const graus = (anguloNome * 180 / Math.PI) + 90;
+          nome.style.transform = `translate(-50%, -50%) rotate(${graus}deg)`;
+        });
+
+        requestAnimationFrame(animarNomesFundo);
+      }
+
+      animarNomesFundo();
     }
   </script>
 </body>
