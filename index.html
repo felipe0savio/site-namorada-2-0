@@ -10,7 +10,7 @@
       font-family: 'Comic Sans MS', cursive, sans-serif;
       color: #d6336c;
       text-align: center;
-      padding: 40px 20px;
+      padding: 80px 20px 40px 20px; /* padding-top maior para espaço da animação */
       overflow-x: hidden;
       position: relative;
       min-height: 100vh;
@@ -25,6 +25,30 @@
       opacity: 0.2;
       pointer-events: none;
       z-index: 0;
+    }
+
+    /* Animação do nome no topo */
+    #animacao-nomes {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      text-align: center;
+      z-index: 1000; /* acima de tudo */
+      pointer-events: none;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-weight: bold;
+      font-size: 2.5em;
+      color: #d6336c;
+      user-select: none;
+      filter: drop-shadow(0 0 5px #a1274a);
+      animation: flutuar 6s ease-in-out infinite;
+    }
+
+    @keyframes flutuar {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-15px); }
     }
 
     #conteudo {
@@ -153,38 +177,11 @@
     audio {
       display: none; /* esconde o player */
     }
-
-    /* Animação do nome no topo */
-    #animacao-nomes {
-      position: fixed;
-      top: 10px;
-      width: 100%;
-      text-align: center;
-      z-index: 20;
-      pointer-events: none;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      font-weight: bold;
-      font-size: 2.5em;
-      color: #d6336c;
-      user-select: none;
-      filter: drop-shadow(0 0 5px #a1274a);
-      animation: flutuar 6s ease-in-out infinite;
-    }
-
-    @keyframes flutuar {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-15px);
-      }
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Nomes animados no topo -->
+  <!-- Animação com nomes -->
   <div id="animacao-nomes">Sávio &amp; Maria Clara</div>
 
   <button id="btnAbrir">CLIQUE AQUI💖</button>
