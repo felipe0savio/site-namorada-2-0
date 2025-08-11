@@ -180,22 +180,21 @@
     .explosion-heart {
       position: absolute;
       color: #ff2e6d;
-      font-size: 16px;
       pointer-events: none;
       user-select: none;
-      animation: flyUpFade 1.5s forwards;
-      will-change: transform, opacity;
       filter: drop-shadow(0 0 2px #d6336c);
+      animation-fill-mode: forwards;
+      will-change: transform, opacity;
     }
 
     @keyframes flyUpFade {
       0% {
         opacity: 1;
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) rotate(0deg) scale(1);
       }
       100% {
         opacity: 0;
-        transform: translate(var(--tx), var(--ty)) scale(0.5);
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rdeg)) scale(0.5);
       }
     }
   </style>
@@ -384,7 +383,7 @@ Sávio Felipe
 
     // Função para criar explosão de corações
     function criarExplosaoCorações(botao) {
-      const numCoracoes = 25;
+      const numCoracoes = 50;
       const rect = botao.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
@@ -393,22 +392,31 @@ Sávio Felipe
         const heart = document.createElement('div');
         heart.classList.add('explosion-heart');
         heart.textContent = '❤️';
+
+        // Tamanhos variados e maiores
+        const size = 14 + Math.random() * 14;
+        heart.style.fontSize = size + 'px';
+
+        // Posiciona no centro do botão
         heart.style.left = centerX + 'px';
         heart.style.top = centerY + 'px';
 
-        // Distância e ângulo aleatório para dispersar os corações
+        // Ângulo, distância e rotação aleatória para dispersão
         const angle = Math.random() * 2 * Math.PI;
-        const distance = 50 + Math.random() * 100;
+        const distance = 150 + Math.random() * 150; // até 300px
+        const rotation = (Math.random() * 360) - 180; // -180 a 180 graus
 
-        // Define variáveis CSS para animação
-        const tx = Math.cos(angle) * distance + 'px';
-        const ty = Math.sin(angle) * distance + 'px';
-        heart.style.setProperty('--tx', tx);
-        heart.style.setProperty('--ty', ty);
+        heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+        heart.style.setProperty('--rdeg', rotation + 'deg');
+
+        // Duração da animação variada (1.2s a 2s)
+        const duration = 1200 + Math.random() * 800;
+        heart.style.animation = `flyUpFade ${duration}ms forwards`;
 
         document.body.appendChild(heart);
 
-        // Remove o coração após a animação terminar
+        // Remove após animação
         heart.addEventListener('animationend', () => {
           heart.remove();
         });
