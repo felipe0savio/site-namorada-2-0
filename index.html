@@ -95,6 +95,7 @@
       position: relative;
       z-index: 10;
       margin-top: 150px;
+      overflow: visible; /* pra explosão não cortar */
     }
 
     #btnAbrir:hover {
@@ -174,6 +175,29 @@
       user-select: none;
       will-change: transform;
     }
+
+    /* Estilos para corações da explosão */
+    .explosion-heart {
+      position: absolute;
+      color: #ff2e6d;
+      font-size: 16px;
+      pointer-events: none;
+      user-select: none;
+      animation: flyUpFade 1.5s forwards;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 0 2px #d6336c);
+    }
+
+    @keyframes flyUpFade {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0.5);
+      }
+    }
   </style>
 </head>
 <body>
@@ -217,6 +241,7 @@
     const nomesFundo = document.getElementById('nomes-fundo');
 
     btnAbrir.addEventListener('click', () => {
+      criarExplosaoCorações(btnAbrir);
       btnAbrir.style.display = 'none';
       conteudo.style.display = 'block';
 
@@ -309,24 +334,21 @@ Sávio Felipe
       for(let i=0; i<numNomes; i++) {
         const span = document.createElement('span');
         span.textContent = nomesTexto;
-        // posição aleatória inicial
         span.style.left = Math.random() * vw + 'px';
         span.style.top = Math.random() * vh + 'px';
-        // tamanho pequeno aleatório para dar variedade
-        const size = 8 + Math.random() * 10; // 8px a 18px
+        const size = 8 + Math.random() * 10;
         span.style.fontSize = size + 'px';
         nomesFundo.appendChild(span);
 
-        // velocidade e direção para movimentar
         nomesArray.push({
           el: span,
           x: parseFloat(span.style.left),
           y: parseFloat(span.style.top),
           size: size,
-          vx: (Math.random() - 0.5) * 0.3, // velocidade horizontal
-          vy: (Math.random() - 0.5) * 0.3, // velocidade vertical
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
           angle: Math.random() * 360,
-          va: (Math.random() - 0.5) * 0.5 // velocidade rotação
+          va: (Math.random() - 0.5) * 0.5
         });
       }
 
@@ -336,7 +358,6 @@ Sávio Felipe
           nome.y += nome.vy;
           nome.angle += nome.va;
 
-          // manter dentro da tela (bounce simples)
           if(nome.x < 0) { nome.x = 0; nome.vx *= -1; }
           if(nome.x > vw) { nome.x = vw; nome.vx *= -1; }
           if(nome.y < 0) { nome.y = 0; nome.vy *= -1; }
@@ -353,13 +374,45 @@ Sávio Felipe
 
       animarNomes();
 
-      // Atualizar vw e vh no resize para manter a animação dentro da tela
       window.addEventListener('resize', () => {
         nomesArray.forEach(nome => {
           nome.x = Math.min(nome.x, window.innerWidth);
           nome.y = Math.min(nome.y, window.innerHeight);
         });
       });
+    }
+
+    // Função para criar explosão de corações
+    function criarExplosaoCorações(botao) {
+      const numCoracoes = 25;
+      const rect = botao.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      for(let i=0; i<numCoracoes; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('explosion-heart');
+        heart.textContent = '❤️';
+        heart.style.left = centerX + 'px';
+        heart.style.top = centerY + 'px';
+
+        // Distância e ângulo aleatório para dispersar os corações
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 50 + Math.random() * 100;
+
+        // Define variáveis CSS para animação
+        const tx = Math.cos(angle) * distance + 'px';
+        const ty = Math.sin(angle) * distance + 'px';
+        heart.style.setProperty('--tx', tx);
+        heart.style.setProperty('--ty', ty);
+
+        document.body.appendChild(heart);
+
+        // Remove o coração após a animação terminar
+        heart.addEventListener('animationend', () => {
+          heart.remove();
+        });
+      }
     }
   </script>
 </body>
